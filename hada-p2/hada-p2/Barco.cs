@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hada;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,47 +9,85 @@ namespace hada_p2
 {
     class Barco
     {
-        // Propiedad para almacenar las coordenadas y etiquetas del barco
+        public event EventHandler<TocadoArgs> eventoTocado;
+        public event EventHandler<HundidoArgs> eventoHundido;
+
         public Dictionary<Coordenada, string> CoordenadasBarco { get; private set; }
+        public string Nombre { get; private set; }
+        public int NumDanyos { get; private set; }
 
-        // Propiedad para el nombre del barco
-        public string Nombre { get; }
-
-        // Constructor que recibe el nombre del barco y las coordenadas iniciales
-        public Barco(string nombre, List<Coordenada> coordenadasIniciales)
+        public Barco(string nombre, int longitud, char orientacion, Coordenada coordenadaInicio)
         {
-            Nombre = nombre;
             CoordenadasBarco = new Dictionary<Coordenada, string>();
+            Nombre = nombre;
+            NumDanyos = 0;
 
-            // Inicializar las etiquetas de cada coordenada con el nombre del barco
-            foreach (var coordenada in coordenadasIniciales)
+            InicializarCoordenadas(longitud, orientacion, coordenadaInicio);
+        }
+
+        private void InicializarCoordenadas(int longitud, char orientacion, Coordenada coordenadaInicio)
+        {
+            for (int i = 0; i < longitud; i++)
             {
-                CoordenadasBarco.Add(coordenada, nombre);
+                Coordenada nuevaCoordenada;
+
+                if (orientacion == 'h')
+                {
+                    nuevaCoordenada = new Coordenada(coordenadaInicio.Fila, coordenadaInicio.Columna + i);
+                }
+                else // 'v'
+                {
+                    nuevaCoordenada = new Coordenada(coordenadaInicio.Fila + i, coordenadaInicio.Columna);
+                }
+
+                CoordenadasBarco.Add(nuevaCoordenada, Nombre);
             }
         }
 
-        // Método que simula un disparo en una coordenada
-        public void Disparo(Coordenada coordenada)
+        public void Disparo(Coordenada c)
         {
-            // Verificar si la coordenada pertenece al barco
-            if (CoordenadasBarco.ContainsKey(coordenada))
+            if (CoordenadasBarco.ContainsKey(c))
             {
-                // Modificar la etiqueta de la coordenada al ser tocada
-                CoordenadasBarco[coordenada] += "_T";
+                string etiqueta = CoordenadasBarco[c];
+
+                if (!etiqueta.EndsWith("_T"))
+                {
+                    CoordenadasBarco[c] = etiqueta + "_T";
+                    NumDanyos++;
+
+                    eventoTocado?.Invoke(this, new TocadoArgs(c));
+
+                    if (Hundido())
+                    {
+                        eventoHundido?.Invoke(this, new HundidoArgs($"El barco {Nombre} ha sido hundido."));
+                    }
+                }
             }
         }
-    }
 
-    // Clase para representar las coordenadas
-    public class Coordenada
-    {
-        public int X { get; }
-        public int Y { get; }
-
-        public Coordenada(int x, int y)
+        public bool Hundido()
         {
-            X = x;
-            Y = y;
+            foreach (var etiqueta in CoordenadasBarco.Values)
+            {
+                if (!etiqueta.EndsWith("_T"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            string result = $"Barco: {Nombre}\nDaños: {NumDanyos}\nEstado: {(Hundido() ? "Hundido" : "A flote")}\nCoordenadas:\n";
+
+            foreach (var kvp in CoordenadasBarco)
+            {
+                result += $"{kvp.Key.Fila},{kvp.Key.Columna} - {kvp.Value}\n";
+            }
+
+            return result;
         }
     }
 }
