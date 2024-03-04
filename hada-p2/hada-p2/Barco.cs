@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hada_p2
+namespace Hada
 {
     class Barco
     {
@@ -55,7 +55,7 @@ namespace hada_p2
                     CoordenadasBarco[c] = etiqueta + "_T";
                     NumDanyos++;
 
-                    eventoTocado?.Invoke(this, new TocadoArgs(c));
+                    eventoTocado?.Invoke(this, new TocadoArgs(Nombre, c, etiqueta));
 
                     if (Hundido())
                     {
