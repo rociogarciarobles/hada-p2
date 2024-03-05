@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hada
 {
-    class Barco
+    public class Barco
     {
         public event EventHandler<TocadoArgs> eventoTocado;
         public event EventHandler<HundidoArgs> eventoHundido;
