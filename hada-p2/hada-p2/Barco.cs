@@ -59,7 +59,7 @@ namespace Hada
 
                     if (Hundido())
                     {
-                        eventoHundido?.Invoke(this, new HundidoArgs($"El barco {Nombre} ha sido hundido."));
+                        eventoHundido?.Invoke(this, new HundidoArgs($"{Nombre}"));
                     }
                 }
             }
@@ -80,11 +80,11 @@ namespace Hada
 
         public override string ToString()
         {
-            string result = $"Barco: {Nombre}\nDaños: {NumDanyos}\nEstado: {(Hundido() ? "Hundido" : "A flote")}\nCoordenadas:\n";
-
-            foreach (var kvp in CoordenadasBarco)
+            string result = $"[{Nombre}] - DAÑOS:[{NumDanyos}] - HUNDIDO:[{(Hundido() ? "True" : "False")}] - COORDENADAS: ";
+            
+            foreach (var coor in CoordenadasBarco)
             {
-                result += $"{kvp.Key.Fila},{kvp.Key.Columna} - {kvp.Value}\n";
+                result += $"[({coor.Key.Fila},{coor.Key.Columna}) :{coor.Value}] ";
             }
 
             return result;

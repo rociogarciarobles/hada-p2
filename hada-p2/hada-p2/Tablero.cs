@@ -9,7 +9,7 @@ namespace Hada
 {
     public class Tablero
     {
-        private const string AGUA = "AGUA";
+        private const string AGUA = "[AGUA]";
 
         public int TamTablero { get; }
         private List<Coordenada> coordenadasDisparadas;
@@ -48,7 +48,8 @@ namespace Hada
             {
                 foreach (Coordenada coordenada in barco.CoordenadasBarco.Keys)
                 {
-                    casillasTablero[coordenada] = barco.Nombre;
+                    casillasTablero[coordenada] = $"[{barco.Nombre}]";
+                    
                 }
             }
         }
@@ -81,13 +82,28 @@ namespace Hada
         }
         public void AgregarBarco(Barco barco)
         {
+            foreach (var coordenada in barco.CoordenadasBarco.Keys)
+            {
+                if (coordenadasTocadas.Contains(coordenada))
+                {
+                    throw new Exception("No se puede agregar un barco en una casilla ya tocada.");
+                }
+            }
+
+            foreach (var coordenada in barco.CoordenadasBarco.Keys)
+            {
+                casillasTablero[coordenada] = $"[{barco.Nombre}]";
+            }
+
             barcos.Add(barco);
+            barco.eventoTocado += CuandoEventoTocado;
+            barco.eventoHundido += CuandoEventoHundido;
         }
 
         public string DibujarTablero()
         {
             string tablero = "";
-
+            
             for (int fila = 0; fila < TamTablero; fila++)
             {
                 for (int columna = 0; columna < TamTablero; columna++)
@@ -97,13 +113,12 @@ namespace Hada
                 }
                 tablero += "\n";
             }
-
             return tablero;
         }
 
         public override string ToString()
         {
-            string infoBarcos = "Información de Barcos:\n";
+            string infoBarcos = "";
             foreach (Barco barco in barcos)
             {
                 infoBarcos += barco.ToString() + "\n";
@@ -111,21 +126,22 @@ namespace Hada
 
             string infoCoordenadasDisparadas = $"Coordenadas Disparadas: {string.Join(", ", coordenadasDisparadas)}\n";
             string infoCoordenadasTocadas = $"Coordenadas Tocadas: {string.Join(", ", coordenadasTocadas)}\n";
+            
 
-            return infoBarcos + infoCoordenadasDisparadas + infoCoordenadasTocadas + DibujarTablero();
+            return infoBarcos + infoCoordenadasDisparadas + infoCoordenadasTocadas + $"\n\n\nCASILLAS TABLERO\n-------\n" + DibujarTablero();
         }
 
         private void CuandoEventoTocado(object sender, TocadoArgs e)
         {
             coordenadasTocadas.Add(e.CoordenadaImpacto);
-            casillasTablero[e.CoordenadaImpacto] = $"{AGUA}_T";
+            casillasTablero[e.CoordenadaImpacto] = $"[{e.Nombre}_T]";
             Console.WriteLine($"TABLERO: Barco [{e.Nombre}] tocado en Coordenada: [{e.CoordenadaImpacto}]");
         }
 
         private void CuandoEventoHundido(object sender, HundidoArgs e)
         {
             barcosEliminados.Add((Barco)sender);
-            Console.WriteLine($"TABLERO: Barco [{e.Nombre}] hundido!!");
+            Console.WriteLine($"TABLERO: Barco1 [{e.Nombre}] hundido!!");
             if (TodosBarcosHundidos())
             {
                 eventoFinPartida?.Invoke(this, EventArgs.Empty);

@@ -11,7 +11,7 @@ namespace Hada
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Bienvenido al juego Hundir la Flota");
+            
 
             // Instancia de la clase Game
             Game game = new Game();

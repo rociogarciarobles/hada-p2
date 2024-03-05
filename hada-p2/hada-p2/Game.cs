@@ -1,5 +1,8 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 namespace Hada
 {
     public class Game
@@ -11,7 +14,8 @@ namespace Hada
         {
             finPartida = false;
             int tamTablero = new Random().Next(4, 10);
-            Tablero tablero = new Tablero(tamTablero, new System.Collections.Generic.List<Barco>());
+            List<Barco> barcos = new List<Barco>();
+            tablero = new Tablero(tamTablero, barcos);
 
             gameLoop();
         }
@@ -24,7 +28,7 @@ namespace Hada
             {
                 Console.WriteLine(tablero.ToString());
 
-                Console.Write("Introduce una coordenada (fila,columna): ");
+                Console.Write("Introduce la coordenada a la que disparar FILA,COLUMNA ('S' para Salir): ");
                 string input = Console.ReadLine();
 
                 if (input.ToLower() == "s")
@@ -56,13 +60,13 @@ namespace Hada
         {
             // Crea al menos tres barcos
             // Puedes ajustar la posición y orientación según tus necesidades
-            Barco barco1 = new Barco("Barco1", 3, 'h', new Coordenada(0, 0));
-            Barco barco2 = new Barco("Barco2", 4, 'v', new Coordenada(2, 3));
-            Barco barco3 = new Barco("Barco3", 2, 'h', new Coordenada(5, 1));
+            Barco barco1 = new Barco("THOR", 3, 'h', new Coordenada(0, 0));
+            Barco barco2 = new Barco("LOKI", 4, 'v', new Coordenada(2, 3));
+            Barco barco3 = new Barco("MAYA", 2, 'h', new Coordenada(5, 1));
 
-            tablero.AgregarBarco(barco1);
-            tablero.AgregarBarco(barco2);
-            tablero.AgregarBarco(barco3);
+           tablero.AgregarBarco(barco1); 
+           tablero.AgregarBarco(barco2);
+           tablero.AgregarBarco(barco3);
         }
 
         private bool TryParseCoordenada(string input, out Coordenada coordenada)
