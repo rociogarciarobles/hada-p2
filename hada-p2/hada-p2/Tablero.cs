@@ -79,6 +79,10 @@ namespace Hada
 
             Console.WriteLine(DibujarTablero());
         }
+        public void AgregarBarco(Barco barco)
+        {
+            barcos.Add(barco);
+        }
 
         public string DibujarTablero()
         {

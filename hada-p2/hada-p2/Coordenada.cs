@@ -58,5 +58,10 @@ namespace Hada
         {
             return Fila == otraCoordenada.Fila && Columna == otraCoordenada.Columna;
         }
+
+        internal static bool TryParse(string input, out Coordenada coordenada)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
