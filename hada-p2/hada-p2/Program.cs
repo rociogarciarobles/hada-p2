@@ -4,12 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hada_p2
+
+namespace Hada
 {
     class Program
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Bienvenido al juego Hundir la Flota");
+
+            // Instancia de la clase Game
+            Game game = new Game();
+
+            Console.WriteLine("Presiona cualquier tecla para salir...");
+            Console.ReadKey();
         }
     }
 }
+
