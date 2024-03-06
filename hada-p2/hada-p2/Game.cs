@@ -60,9 +60,9 @@ namespace Hada
         {
             // Crea al menos tres barcos
             // Puedes ajustar la posición y orientación según tus necesidades
-            Barco barco1 = new Barco("THOR", 3, 'h', new Coordenada(0, 0));
-            Barco barco2 = new Barco("LOKI", 4, 'v', new Coordenada(2, 3));
-            Barco barco3 = new Barco("MAYA", 2, 'h', new Coordenada(5, 1));
+            Barco barco1 = new Barco("THOR", 1, 'h', new Coordenada(0, 0));
+            Barco barco2 = new Barco("LOKI", 2, 'v', new Coordenada(1, 2));
+            Barco barco3 = new Barco("MAYA", 3, 'h', new Coordenada(3, 1));
 
            tablero.AgregarBarco(barco1); 
            tablero.AgregarBarco(barco2);

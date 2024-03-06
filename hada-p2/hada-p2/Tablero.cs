@@ -141,7 +141,7 @@ namespace Hada
         private void CuandoEventoHundido(object sender, HundidoArgs e)
         {
             barcosEliminados.Add((Barco)sender);
-            Console.WriteLine($"TABLERO: Barco1 [{e.Nombre}] hundido!!");
+            Console.WriteLine($"TABLERO: Barco [{e.Nombre}] hundido!!");
             if (TodosBarcosHundidos())
             {
                 eventoFinPartida?.Invoke(this, EventArgs.Empty);
